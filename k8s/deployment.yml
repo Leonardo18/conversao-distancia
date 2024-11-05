@@ -1,0 +1,39 @@
+# 4 Campos fixos
+# versao da api usada do kubectl
+apiVersion: apps/v1
+# O tipo usado nesse caso o kind da api version
+kind: Deployment
+# Metadados do objeot, name labels etc
+metadata:
+  name: conversao-distancia
+# Espeficicação do deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: conversao-distancia
+  template:
+    metadata:
+      labels:
+        app: conversao-distancia
+    spec:
+      containers:
+      - name: conversao-distancia
+        image: leonardodutra/desafio-devops-conversao-distancia:v2
+        ports:
+          - containerPort: 5000
+
+#separador para declarar novo objeto
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: conversao-distancia
+spec:
+  selector:
+    app: conversao-distancia
+  ports:
+    - port: 80
+      targetPort: 5000
+      nodePort: 30000
+  type: NodePort
